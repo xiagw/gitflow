@@ -1,3 +1,6 @@
 [submodule "shFlags"]
 	path = shFlags
 	url = git://github.com/nvie/shFlags.git
+[submodule "git-flow-completion"]
+	path = git-flow-completion
+	url = git@github.com:xiagw/git-flow-completion.git
