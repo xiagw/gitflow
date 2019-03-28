@@ -1,7 +1,7 @@
 @echo off
 setlocal
 if not "%~1"=="" set GIT_HOME=%~f1
-if "%GIT_HOME%"=="" call :FindGitHome "git.cmd"
+if "%GIT_HOME%"=="" call :FindGitHome "git.exe"
 
 if exist "%GIT_HOME%" goto :GitHomeOK
 
@@ -42,6 +42,10 @@ xcopy "%~dp0\..\shFlags\src\shflags" "%GIT_HOME%\bin\gitflow-shFlags" /Y /R /F |
 
 if %ERR%==1 choice /T 30 /C Y /D Y /M "Some unexpected errors happened. Sorry, you'll have to fix them by yourself."
 
+echo Installing git-flow-completion "%GIT_HOME%\etc\profile.d"...
+xcopy "%~dp0\..\git-flow-completion\git-flow-completion.bash" "%GIT_HOME%\etc\profile.d\" /Y /R /F || set ERR=1
+
+
 :End
 endlocal & exit /B %ERR%
 goto :EOF
@@ -62,6 +66,10 @@ goto :End
 
 :ChkGetopt
 :: %1 is getopt.exe
+if not exist "%GIT_HOME%\bin\%1" (
+    xcopy /y "%~dp0\*.exe" "%GIT_HOME%\bin\"
+    xcopy /y "%~dp0\*.dll" "%GIT_HOME%\bin\" 
+    )
 if exist "%GIT_HOME%\bin\%1" goto :EOF
 if exist "%USERPROFILE%\bin\%1" goto :EOF
 if exist "%~f$PATH:1" goto :EOF
